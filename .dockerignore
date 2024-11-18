@@ -1,0 +1,25 @@
+# Node modules
+node_modules
+
+# Build output
+dist
+
+# Environment variables
+.env
+
+# Docker files
+Dockerfile
+docker-compose.yml
+
+# Git
+.git
+.gitignore
+
+# Documentation
+README.md
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
