@@ -1,25 +1,21 @@
 # Node modules
 node_modules
+npm-debug.log
+yarn-error.log
 
-# Build output
+# TypeScript
 dist
+*.tsbuildinfo
 
 # Environment variables
 .env
 
-# Docker files
+# Docker
 Dockerfile
 docker-compose.yml
 
-# Git
+# Miscellaneous
 .git
 .gitignore
-
-# Documentation
+.gitlab-ci.yml
 README.md
-
-# Logs
-logs
-*.log
-npm-debug.log*
-

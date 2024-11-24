@@ -4,18 +4,18 @@ services:
       context: .
       dockerfile: Dockerfile
     image: novikaway/home-library:latest
-    container_name: nestjs-app
+    container_name: home-library-app
     restart: unless-stopped
     ports:
       - "4000:4000"
     environment:
       - NODE_ENV=production
-      - PORT=4000
       - DB_HOST=database
       - DB_PORT=5432
-      - DB_USERNAME=novikaway
-      - DB_PASSWORD=yourpassword
-      - DB_DATABASE=yourdatabase
+      - DB_USERNAME=nestuser
+      - DB_PASSWORD=SecureP@ssw0rd!
+      - DB_DATABASE=homelibrarydb
+      # Другие переменные окружения
     env_file:
       - .env
     depends_on:
@@ -25,12 +25,12 @@ services:
 
   database:
     image: postgres:15-alpine
-    container_name: postgres-db
+    container_name: home-library-db
     restart: unless-stopped
     environment:
-      - POSTGRES_USER=novikaway
-      - POSTGRES_PASSWORD=yourpassword
-      - POSTGRES_DB=yourdatabase
+      - POSTGRES_USER=nestuser
+      - POSTGRES_PASSWORD=SecureP@ssw0rd!
+      - POSTGRES_DB=homelibrarydb
     volumes:
       - db-data:/var/lib/postgresql/data
     ports:

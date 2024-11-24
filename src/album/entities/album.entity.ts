@@ -19,9 +19,9 @@ export class Album {
   @Column('int')
   releaseYear: number;
 
-  @CreateDateColumn({ type: 'bigint' })
-  createdAt: number;
+  @CreateDateColumn({ type: 'timestamp with time zone' })
+  createdAt: Date;
 
-  @UpdateDateColumn({ type: 'bigint' })
-  updatedAt: number;
+  @UpdateDateColumn({ type: 'timestamp with time zone' })
+  updatedAt: Date;
 }

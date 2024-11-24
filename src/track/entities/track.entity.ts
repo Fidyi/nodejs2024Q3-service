@@ -28,10 +28,10 @@ export class Track {
   version: number;
 
   @ApiProperty({ example: 1609459200000, description: 'Timestamp when the track was created' })
-  @CreateDateColumn({ type: 'bigint' })
-  createdAt: number;
+  @CreateDateColumn({ type: 'timestamp with time zone' })
+  createdAt: Date;
 
   @ApiProperty({ example: 1609459200000, description: 'Timestamp when the track was last updated' })
-  @UpdateDateColumn({ type: 'bigint' })
-  updatedAt: number;
+  @UpdateDateColumn({ type: 'timestamp with time zone' })
+  updatedAt: Date;
 }

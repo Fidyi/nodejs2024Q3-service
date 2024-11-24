@@ -27,9 +27,9 @@ export class Favorite {
   @ManyToOne(() => Artist, (artist) => artist.id, { nullable: true, eager: true })
   artist: Artist;
 
-  @CreateDateColumn({ type: 'bigint' })
-  createdAt: number;
+  @CreateDateColumn({ type: 'timestamp with time zone' })
+  createdAt: Date;
 
-  @UpdateDateColumn({ type: 'bigint' })
-  updatedAt: number;
+  @UpdateDateColumn({ type: 'timestamp with time zone' })
+  updatedAt: Date;
 }

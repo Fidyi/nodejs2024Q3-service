@@ -1,16 +1,14 @@
-# Stage 1: Builder
+# Stage 1: Build
 FROM node:22-alpine AS builder
 
 # Set working directory
 WORKDIR /app
 
-# Copy package.json and package-lock.json
+# Install dependencies
 COPY package*.json ./
-
-# Install all dependencies (including devDependencies)
 RUN npm install
 
-# Copy the rest of the application code
+# Copy source code
 COPY . .
 
 # Build the application
@@ -22,17 +20,18 @@ FROM node:22-alpine
 # Set working directory
 WORKDIR /app
 
-# Copy package.json and package-lock.json
+# Install production dependencies
 COPY package*.json ./
-
-# Install only production dependencies
 RUN npm install --only=production
 
-# Copy built application from builder
+# Copy built files from builder
 COPY --from=builder /app/dist ./dist
 
-# Expose application port
+# Удалите или закомментируйте следующую строку
+# COPY .env ./
+
+# Expose the application port
 EXPOSE 4000
 
-# Define the command to run the application
+# Start the application
 CMD ["node", "dist/main"]
