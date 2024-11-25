@@ -1,9 +1,18 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 
 @Entity()
 export class Album {
-  @ApiProperty({ example: 'album-uuid', description: 'Unique identifier of the album' })
+  @ApiProperty({
+    example: 'album-uuid',
+    description: 'Unique identifier of the album',
+  })
   @PrimaryGeneratedColumn('uuid')
   id: string;
 

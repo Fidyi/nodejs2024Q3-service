@@ -8,14 +8,6 @@ services:
     restart: unless-stopped
     ports:
       - "4000:4000"
-    environment:
-      - NODE_ENV=production
-      - DB_HOST=database
-      - DB_PORT=5432
-      - DB_USERNAME=nestuser
-      - DB_PASSWORD=SecureP@ssw0rd!
-      - DB_DATABASE=homelibrarydb
-      # Другие переменные окружения
     env_file:
       - .env
     depends_on:
@@ -33,6 +25,7 @@ services:
       - POSTGRES_DB=homelibrarydb
     volumes:
       - db-data:/var/lib/postgresql/data
+      - db-logs:/var/log/postgresql
     ports:
       - "5432:5432"
     networks:
@@ -44,4 +37,6 @@ networks:
 
 volumes:
   db-data:
+    driver: local
+  db-logs:
     driver: local

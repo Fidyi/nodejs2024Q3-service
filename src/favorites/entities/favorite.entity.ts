@@ -1,4 +1,10 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { User } from '../../user/entities/user.entity';
 import { Track } from '../../track/entities/track.entity';
@@ -7,7 +13,10 @@ import { Artist } from '../../artist/entities/artist.entity';
 
 @Entity()
 export class Favorite {
-  @ApiProperty({ example: 'favorite-uuid', description: 'Unique identifier of the favorite item' })
+  @ApiProperty({
+    example: 'favorite-uuid',
+    description: 'Unique identifier of the favorite item',
+  })
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -24,7 +33,10 @@ export class Favorite {
   album: Album;
 
   @ApiProperty({ description: 'Artist that is favorited', required: false })
-  @ManyToOne(() => Artist, (artist) => artist.id, { nullable: true, eager: true })
+  @ManyToOne(() => Artist, (artist) => artist.id, {
+    nullable: true,
+    eager: true,
+  })
   artist: Artist;
 
   @CreateDateColumn({ type: 'timestamp with time zone' })

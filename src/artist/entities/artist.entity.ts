@@ -1,9 +1,18 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 
 @Entity()
 export class Artist {
-  @ApiProperty({ example: 'artist-uuid', description: 'Unique identifier of the artist' })
+  @ApiProperty({
+    example: 'artist-uuid',
+    description: 'Unique identifier of the artist',
+  })
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -11,7 +20,10 @@ export class Artist {
   @Column()
   name: string;
 
-  @ApiProperty({ example: 'Genre of the artist', description: 'Genre of the artist' })
+  @ApiProperty({
+    example: 'Genre of the artist',
+    description: 'Genre of the artist',
+  })
   @Column()
   genre: string;
 
@@ -19,5 +31,5 @@ export class Artist {
   createdAt: Date;
 
   @UpdateDateColumn({ type: 'timestamp with time zone' })
-  updatedAt:  Date;
+  updatedAt: Date;
 }

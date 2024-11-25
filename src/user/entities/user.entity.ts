@@ -1,9 +1,18 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 
 @Entity()
 export class User {
-  @ApiProperty({ example: 'user-uuid', description: 'Unique identifier of the user' })
+  @ApiProperty({
+    example: 'user-uuid',
+    description: 'Unique identifier of the user',
+  })
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -15,7 +24,10 @@ export class User {
   @Column()
   password: string;
 
-  @ApiProperty({ example: 'john@example.com', description: 'Email of the user' })
+  @ApiProperty({
+    example: 'john@example.com',
+    description: 'Email of the user',
+  })
   @Column({ unique: true })
   email: string;
 
