@@ -4,8 +4,10 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToMany,
 } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
+import { Favorite } from '../../favorites/entities/favorite.entity';
 
 @Entity()
 export class Album {
@@ -27,6 +29,9 @@ export class Album {
   @ApiProperty({ example: 2023, description: 'Release year of the album' })
   @Column('int')
   releaseYear: number;
+
+  @OneToMany(() => Favorite, (favorite) => favorite.album)
+  favorites: Favorite[];
 
   @CreateDateColumn({ type: 'timestamp with time zone' })
   createdAt: Date;

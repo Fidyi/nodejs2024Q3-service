@@ -21,19 +21,25 @@ export class Favorite {
   id: string;
 
   @ApiProperty({ description: 'User who favorited the item' })
-  @ManyToOne(() => User, (user) => user.id, { eager: true })
+  @ManyToOne(() => User, (user) => user.favorites, { eager: true })
   user: User;
 
   @ApiProperty({ description: 'Track that is favorited', required: false })
-  @ManyToOne(() => Track, (track) => track.id, { nullable: true, eager: true })
+  @ManyToOne(() => Track, (track) => track.favorites, {
+    nullable: true,
+    eager: true,
+  })
   track: Track;
 
   @ApiProperty({ description: 'Album that is favorited', required: false })
-  @ManyToOne(() => Album, (album) => album.id, { nullable: true, eager: true })
+  @ManyToOne(() => Album, (album) => album.favorites, {
+    nullable: true,
+    eager: true,
+  })
   album: Album;
 
   @ApiProperty({ description: 'Artist that is favorited', required: false })
-  @ManyToOne(() => Artist, (artist) => artist.id, {
+  @ManyToOne(() => Artist, (artist) => artist.favorites, {
     nullable: true,
     eager: true,
   })

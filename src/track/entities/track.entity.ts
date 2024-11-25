@@ -4,13 +4,15 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToMany,
 } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
+import { Favorite } from '../../favorites/entities/favorite.entity';
 
 @Entity()
 export class Track {
   @ApiProperty({
-    example: '123e4567-e89b-12d3-a456-426614174000',
+    example: 'track-uuid',
     description: 'Unique identifier of the track',
   })
   @PrimaryGeneratedColumn('uuid')
@@ -39,17 +41,12 @@ export class Track {
   @Column('int', { default: 1 })
   version: number;
 
-  @ApiProperty({
-    example: 1609459200000,
-    description: 'Timestamp when the track was created',
-  })
+  @OneToMany(() => Favorite, (favorite) => favorite.track)
+  favorites: Favorite[];
+
   @CreateDateColumn({ type: 'timestamp with time zone' })
   createdAt: Date;
 
-  @ApiProperty({
-    example: 1609459200000,
-    description: 'Timestamp when the track was last updated',
-  })
   @UpdateDateColumn({ type: 'timestamp with time zone' })
   updatedAt: Date;
 }

@@ -4,8 +4,10 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToMany,
 } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
+import { Favorite } from '../../favorites/entities/favorite.entity';
 
 @Entity()
 export class User {
@@ -30,6 +32,9 @@ export class User {
   })
   @Column({ unique: true })
   email: string;
+
+  @OneToMany(() => Favorite, (favorite) => favorite.user)
+  favorites: Favorite[];
 
   @CreateDateColumn({ type: 'timestamp with time zone' })
   createdAt: Date;
