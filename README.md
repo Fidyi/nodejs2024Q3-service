@@ -17,55 +17,125 @@ git clone {repository URL}
 npm install
 ```
 
-## Running application
+## Building the Application
+
+To clean previous builds and create a new one:
 
 ```
-npm start
+npm run build
 ```
 
-After starting the app on port (4000 as default) you can open
-in your browser OpenAPI documentation by typing http://localhost:4000/doc/.
-For more information about OpenAPI/Swagger please visit https://swagger.io/.
+## Running the Application
+
+To run the application in different environments:
+
+- **Development Mode**:
+
+  ```
+  npm run start:dev
+  ```
+
+- **Debug Mode**:
+
+  ```
+  npm run start:debug
+  ```
+
+- **Production Mode**:
+  ```
+  npm run start:prod
+  ```
+
+After starting the app (port 4000 by default), you can access the OpenAPI documentation in your browser at [http://localhost:4000/doc/](http://localhost:4000/doc/). For more information about OpenAPI/Swagger, please visit [Swagger's official website](https://swagger.io/).
 
 ## Testing
 
-After application running open new terminal and enter:
+To run tests for the application, open a new terminal and enter one of the following commands:
 
-To run all tests without authorization
+- **Run All Tests Without Authorization**:
+
+  ```
+  npm run test
+  ```
+
+- **Run Only a Specific Test Suite**:
+
+  ```
+  npm run test -- <path to suite>
+  ```
+
+- **Run All Tests With Authorization**:
+
+  ```
+  npm run test:auth
+  ```
+
+- **Run Only a Specific Test Suite With Authorization**:
+
+  ```
+  npm run test:auth -- <path to suite>
+  ```
+
+- **Run Tests Continuously**:
+
+  ```
+  npm run test:watch
+  ```
+
+- **Run Tests With Coverage Report**:
+
+  ```
+  npm run test:cov
+  ```
+
+- **Debug Tests**:
+  ```
+  npm run test:debug
+  ```
+
+## Database Migrations
+
+Use TypeORM CLI commands to handle database migrations:
+
+- **Create a New Migration**:
+
+  ```
+  npm run migration:create -- <migration-name>
+  ```
+
+- **Run Migrations**:
+
+  ```
+  npm run migration:run
+  ```
+
+- **Revert the Last Migration**:
+  ```
+  npm run migration:revert
+  ```
+
+## Linting and Formatting
+
+- **Lint and Fix Code**:
+
+  ```
+  npm run lint
+  ```
+
+- **Auto-Fix and Format Code**:
+  ```
+  npm run format
+  ```
+
+## Security Vulnerability Scan
+
+To check for any security vulnerabilities in the dependencies, run:
 
 ```
-npm run test
+npm run scan:vuln
 ```
 
-To run only one of all test suites
-
-```
-npm run test -- <path to suite>
-```
-
-To run all test with authorization
-
-```
-npm run test:auth
-```
-
-To run only specific test suite with authorization
-
-```
-npm run test:auth -- <path to suite>
-```
-
-### Auto-fix and format
-
-```
-npm run lint
-```
-
-```
-npm run format
-```
-
-### Debugging in VSCode
+## Debugging in VSCode
 
 Press <kbd>F5</kbd> to debug.
 
