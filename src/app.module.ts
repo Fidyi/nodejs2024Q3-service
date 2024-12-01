@@ -1,14 +1,15 @@
-// src/app.module.ts
-
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-
 import { UserModule } from './user/user.module';
 import { ArtistModule } from './artist/artist.module';
 import { AlbumModule } from './album/album.module';
 import { TrackModule } from './track/track.module';
 import { FavoritesModule } from './favorites/favorites.module';
+import { LoggingService } from './logging/logging.service';
+import { LoggingInterceptor } from './logging/logging.interceptor';
+import { AllExceptionsFilter } from './logging/all-exceptions.filter';
+import { APP_INTERCEPTOR, APP_FILTER } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -48,6 +49,17 @@ import { FavoritesModule } from './favorites/favorites.module';
     AlbumModule,
     TrackModule,
     FavoritesModule,
+  ],
+  providers: [
+    LoggingService,
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: LoggingInterceptor,
+    },
+    {
+      provide: APP_FILTER,
+      useClass: AllExceptionsFilter,
+    },
   ],
 })
 export class AppModule {}
