@@ -10,28 +10,32 @@ import {
   HttpStatus,
   NotFoundException,
   BadRequestException,
+  UseGuards,
 } from '@nestjs/common';
 
 import { validate as isUuid } from 'uuid';
 import { AlbumService } from './album.service';
 import { CreateAlbumDto } from './dto/create-album.dto';
 import { UpdateAlbumDto } from './dto/update-album.dto';
-
+import { AuthGuard } from '@nestjs/passport';
+import { ApiTags } from '@nestjs/swagger';
+@UseGuards(AuthGuard('jwt'))
+@ApiTags('album')
 @Controller('album')
 export class AlbumController {
   constructor(private readonly albumService: AlbumService) {}
 
   @Get()
-  getAllAlbums() {
-    return this.albumService.findAll();
+  async getAllAlbums() {
+    return await this.albumService.findAll();
   }
 
   @Get(':id')
-  getAlbumById(@Param('id') id: string) {
+  async getAlbumById(@Param('id') id: string) {
     if (!isUuid(id)) {
       throw new BadRequestException('Invalid album ID');
     }
-    const album = this.albumService.findById(id);
+    const album = await this.albumService.findById(id);
     if (!album) {
       throw new NotFoundException('Album not found');
     }
@@ -40,16 +44,16 @@ export class AlbumController {
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  createAlbum(@Body() createAlbumDto: CreateAlbumDto) {
-    return this.albumService.create(createAlbumDto);
+  async createAlbum(@Body() createAlbumDto: CreateAlbumDto) {
+    return await this.albumService.create(createAlbumDto);
   }
 
   @Put(':id')
-  updateAlbum(@Param('id') id: string, @Body() updateAlbumDto: UpdateAlbumDto) {
+  async updateAlbum(@Param('id') id: string, @Body() updateAlbumDto: UpdateAlbumDto) {
     if (!isUuid(id)) {
       throw new BadRequestException('Invalid album ID');
     }
-    const updatedAlbum = this.albumService.update(id, updateAlbumDto);
+    const updatedAlbum = await this.albumService.update(id, updateAlbumDto);
     if (!updatedAlbum) {
       throw new NotFoundException('Album not found');
     }
@@ -58,11 +62,11 @@ export class AlbumController {
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  deleteAlbum(@Param('id') id: string) {
+  async deleteAlbum(@Param('id') id: string) {
     if (!isUuid(id)) {
       throw new BadRequestException('Invalid album ID');
     }
-    const deleted = this.albumService.delete(id);
+    const deleted = await this.albumService.delete(id);
     if (!deleted) {
       throw new NotFoundException('Album not found');
     }

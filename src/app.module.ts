@@ -9,7 +9,9 @@ import { FavoritesModule } from './favorites/favorites.module';
 import { LoggingService } from './logging/logging.service';
 import { LoggingInterceptor } from './logging/logging.interceptor';
 import { AllExceptionsFilter } from './logging/all-exceptions.filter';
-import { APP_INTERCEPTOR, APP_FILTER } from '@nestjs/core';
+import { APP_INTERCEPTOR, APP_FILTER, APP_GUARD } from '@nestjs/core';
+import { AuthModule } from './auth/auth.module';
+import { JwtAuthGuard } from './auth/jwt-auth.guard';
 
 @Module({
   imports: [
@@ -49,6 +51,7 @@ import { APP_INTERCEPTOR, APP_FILTER } from '@nestjs/core';
     AlbumModule,
     TrackModule,
     FavoritesModule,
+    AuthModule,
   ],
   providers: [
     LoggingService,
@@ -59,6 +62,11 @@ import { APP_INTERCEPTOR, APP_FILTER } from '@nestjs/core';
     {
       provide: APP_FILTER,
       useClass: AllExceptionsFilter,
+    },
+    JwtAuthGuard,
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
     },
   ],
 })

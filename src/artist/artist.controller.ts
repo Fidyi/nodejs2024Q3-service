@@ -10,28 +10,32 @@ import {
   HttpStatus,
   NotFoundException,
   BadRequestException,
+  UseGuards,
 } from '@nestjs/common';
 
 import { validate as isUuid } from 'uuid';
 import { ArtistService } from './artist.service';
 import { CreateArtistDto } from './dto/create-artist.dto';
 import { UpdateArtistDto } from './dto/update-artist.dto';
-
+import { AuthGuard } from '@nestjs/passport';
+import { ApiTags } from '@nestjs/swagger';
+@UseGuards(AuthGuard('jwt'))
+@ApiTags('artist')
 @Controller('artist')
 export class ArtistController {
   constructor(private readonly artistService: ArtistService) {}
 
   @Get()
-  getAllArtists() {
-    return this.artistService.findAll();
+  async getAllArtists() {
+    return await this.artistService.findAll();
   }
 
   @Get(':id')
-  getArtistById(@Param('id') id: string) {
+  async getArtistById(@Param('id') id: string) {
     if (!isUuid(id)) {
       throw new BadRequestException('Invalid artist ID');
     }
-    const artist = this.artistService.findById(id);
+    const artist = await this.artistService.findById(id);
     if (!artist) {
       throw new NotFoundException('Artist not found');
     }
@@ -40,19 +44,19 @@ export class ArtistController {
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  createArtist(@Body() createArtistDto: CreateArtistDto) {
-    return this.artistService.create(createArtistDto);
+  async createArtist(@Body() createArtistDto: CreateArtistDto) {
+    return await this.artistService.create(createArtistDto);
   }
 
   @Put(':id')
-  updateArtist(
+  async updateArtist(
     @Param('id') id: string,
     @Body() updateArtistDto: UpdateArtistDto,
   ) {
     if (!isUuid(id)) {
       throw new BadRequestException('Invalid artist ID');
     }
-    const updatedArtist = this.artistService.update(id, updateArtistDto);
+    const updatedArtist = await this.artistService.update(id, updateArtistDto);
     if (!updatedArtist) {
       throw new NotFoundException('Artist not found');
     }
@@ -61,11 +65,11 @@ export class ArtistController {
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  deleteArtist(@Param('id') id: string) {
+  async deleteArtist(@Param('id') id: string) {
     if (!isUuid(id)) {
       throw new BadRequestException('Invalid artist ID');
     }
-    const deleted = this.artistService.delete(id);
+    const deleted = await this.artistService.delete(id);
     if (!deleted) {
       throw new NotFoundException('Artist not found');
     }

@@ -10,28 +10,32 @@ import {
   HttpStatus,
   NotFoundException,
   BadRequestException,
+  UseGuards,
 } from '@nestjs/common';
 
 import { validate as isUuid } from 'uuid';
 import { TrackService } from './track.service';
 import { CreateTrackDto } from './dto/create-track.dto';
 import { UpdateTrackDto } from './dto/update-track.dto';
-
+import { AuthGuard } from '@nestjs/passport';
+import { ApiTags } from '@nestjs/swagger';
+@UseGuards(AuthGuard('jwt'))
+@ApiTags('track')
 @Controller('track')
 export class TrackController {
   constructor(private readonly trackService: TrackService) {}
 
   @Get()
-  getAllTracks() {
-    return this.trackService.findAll();
+  async getAllTracks() {
+    return await this.trackService.findAll();
   }
 
   @Get(':id')
-  getTrackById(@Param('id') id: string) {
+  async getTrackById(@Param('id') id: string) {
     if (!isUuid(id)) {
       throw new BadRequestException('Invalid track ID');
     }
-    const track = this.trackService.findById(id);
+    const track = await this.trackService.findById(id);
     if (!track) {
       throw new NotFoundException('Track not found');
     }
@@ -40,16 +44,16 @@ export class TrackController {
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  createTrack(@Body() createTrackDto: CreateTrackDto) {
-    return this.trackService.create(createTrackDto);
+  async createTrack(@Body() createTrackDto: CreateTrackDto) {
+    return await this.trackService.create(createTrackDto);
   }
 
   @Put(':id')
-  updateTrack(@Param('id') id: string, @Body() updateTrackDto: UpdateTrackDto) {
+  async updateTrack(@Param('id') id: string, @Body() updateTrackDto: UpdateTrackDto) {
     if (!isUuid(id)) {
       throw new BadRequestException('Invalid track ID');
     }
-    const updatedTrack = this.trackService.update(id, updateTrackDto);
+    const updatedTrack = await this.trackService.update(id, updateTrackDto);
     if (!updatedTrack) {
       throw new NotFoundException('Track not found');
     }
@@ -58,11 +62,11 @@ export class TrackController {
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  deleteTrack(@Param('id') id: string) {
+  async deleteTrack(@Param('id') id: string) {
     if (!isUuid(id)) {
       throw new BadRequestException('Invalid track ID');
     }
-    const deleted = this.trackService.delete(id);
+    const deleted = await this.trackService.delete(id);
     if (!deleted) {
       throw new NotFoundException('Track not found');
     }

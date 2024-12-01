@@ -7,65 +7,73 @@ import { User } from './interfaces/user.interface';
 import { v4 as uuidv4 } from 'uuid';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdatePasswordDto } from './dto/update-password.dto';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UserService {
   private users: User[] = [];
 
-  findAll(): Omit<User, 'password'>[] {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  async findAll(): Promise<Omit<User, 'password'>[]> {
     return this.users.map(({ password: _password, ...rest }) => rest);
   }
 
-  findById(id: string): Omit<User, 'password'> {
+  async findById(id: string): Promise<Omit<User, 'password'>> {
     const user = this.users.find((user) => user.id === id);
     if (!user) {
       throw new NotFoundException('User not found');
     }
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password: _password, ...rest } = user;
     return rest;
   }
 
-  create(createUserDto: CreateUserDto): Omit<User, 'password'> {
+  async create(createUserDto: CreateUserDto): Promise<Omit<User, 'password'>> {
+    const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
     const newUser: User = {
       id: uuidv4(),
       login: createUserDto.login,
-      password: createUserDto.password,
+      password: hashedPassword,
       version: 1,
       createdAt: Date.now(),
       updatedAt: Date.now(),
     };
     this.users.push(newUser);
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password: _password, ...rest } = newUser;
     return rest;
   }
 
-  update(
+  async update(
     id: string,
     updatePasswordDto: UpdatePasswordDto,
-  ): Omit<User, 'password'> {
+  ): Promise<Omit<User, 'password'>> {
     const user = this.users.find((user) => user.id === id);
     if (!user) {
       throw new NotFoundException('User not found');
     }
-    if (user.password !== updatePasswordDto.oldPassword) {
+    const isOldPasswordValid = await bcrypt.compare(
+      updatePasswordDto.oldPassword,
+      user.password,
+    );
+    if (!isOldPasswordValid) {
       throw new ForbiddenException('Old password is incorrect');
     }
-    user.password = updatePasswordDto.newPassword;
+
+    const hashedNewPassword = await bcrypt.hash(updatePasswordDto.newPassword, 10);
+    user.password = hashedNewPassword;
     user.version += 1;
     user.updatedAt = Date.now();
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password: _password, ...rest } = user;
     return rest;
   }
 
-  delete(id: string): void {
+  async delete(id: string): Promise<void> {
     const index = this.users.findIndex((user) => user.id === id);
     if (index === -1) {
       throw new NotFoundException('User not found');
     }
     this.users.splice(index, 1);
+  }
+
+  async findByLogin(login: string): Promise<User | undefined> {
+    return this.users.find((user) => user.login === login);
   }
 }
