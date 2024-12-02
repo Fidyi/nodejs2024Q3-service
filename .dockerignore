@@ -1,0 +1,21 @@
+# Node modules
+node_modules
+npm-debug.log
+yarn-error.log
+
+# TypeScript
+dist
+*.tsbuildinfo
+
+# Environment variables
+.env
+
+# Docker
+Dockerfile
+docker-compose.yml
+
+# Miscellaneous
+.git
+.gitignore
+.gitlab-ci.yml
+README.md
